@@ -175,7 +175,7 @@ export default function Hero() {
               e.currentTarget.style.borderColor = 'rgba(201,169,110,0.5)'
             }}
           >
-            Make it yours — order yours now
+            Order yours now
             <span style={{ fontSize: '1.2em' }}>&#8594;</span>
           </button>
 
