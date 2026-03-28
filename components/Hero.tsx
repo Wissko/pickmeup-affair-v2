@@ -145,6 +145,40 @@ export default function Hero() {
             Handcrafted for those who believe dessert should be an experience, not an afterthought.
           </p>
 
+          <button
+            onClick={() => navigate('/contact')}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              fontFamily: 'var(--font-dm)',
+              fontWeight: 400,
+              fontSize: '0.68rem',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: '#f5ede0',
+              textDecoration: 'none',
+              borderBottom: '1px solid rgba(201,169,110,0.5)',
+              paddingBottom: '0.25rem',
+              transition: 'color 0.3s ease, border-color 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#c9a96e'
+              e.currentTarget.style.borderColor = '#c9a96e'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#f5ede0'
+              e.currentTarget.style.borderColor = 'rgba(201,169,110,0.5)'
+            }}
+          >
+            Make it yours — order yours now
+            <span style={{ fontSize: '1.2em' }}>&#8594;</span>
+          </button>
+
 
         </motion.div>
       </motion.div>
