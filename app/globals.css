@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --espresso: #0a0806;
+  --espresso-mid: #1a1410;
+  --gold: #c9a96e;
+  --gold-light: #e8c98a;
+  --cream: #f5ede0;
+  --muted: #7a6a58;
+  --font-cormorant: "Cormorant Garamond", Georgia, serif;
+  --font-dm: "DM Sans", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--espresso);
+  color: var(--cream);
+  font-family: var(--font-dm);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--espresso);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--espresso);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 2px;
+}
+
+/* Gold line divider utility */
+.gold-line {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* Label style */
+.label-tag {
+  font-family: var(--font-dm);
+  font-weight: 400;
+  font-size: 0.6rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
