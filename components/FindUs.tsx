@@ -8,25 +8,25 @@ const ease = [0.22, 1, 0.36, 1] as const
 
 const markets = [
   {
-    day: 'Sat',
+    day: 'Thu',
     market: 'Cathedral Square Markets',
     location: '410 Ann Street, Brisbane',
-    time: 'Follow for times',
-    frequency: 'Regular',
+    time: '8am to 2pm',
+    frequency: 'Every Thursday',
   },
   {
     day: 'Sat',
     market: 'Brisbane Markets',
     location: '385 Sherwood Rd, Rocklea',
-    time: 'Follow for times',
-    frequency: 'Regular',
+    time: '6am to 12pm',
+    frequency: 'Every Saturday',
   },
   {
     day: 'Sun',
     market: 'Nundah Markets',
     location: 'Station St, Nundah',
-    time: 'Follow for times',
-    frequency: 'Regular',
+    time: '6am to 12pm',
+    frequency: 'Every Sunday',
   },
 ]
 
@@ -35,7 +35,7 @@ const events = [
     date: 'Markets',
     title: 'Pop-ups at Brisbane\'s Best Markets',
     location: 'Various locations, Brisbane',
-    note: 'Catch us regularly at Cathedral Square, Rocklea, and Nundah. Follow on Instagram for confirmed dates.',
+    note: 'Every Thursday at Cathedral Square, every Saturday at Rocklea, every Sunday at Nundah. Follow on Instagram for special appearances.',
   },
   {
     date: 'By request',
@@ -207,7 +207,7 @@ export default function FindUs({ standalone = false }: { standalone?: boolean })
             letterSpacing: '0.04em',
           }}
         >
-          Schedule subject to change. Follow us on Instagram for the latest confirmed dates.
+          Pop-up appearances and special events may vary. Follow us on Instagram for any changes.
         </motion.p>
       </section>
 
@@ -325,8 +325,8 @@ export default function FindUs({ standalone = false }: { standalone?: boolean })
               marginBottom: '2.5rem',
             }}
           >
-            Our schedule lives on Instagram. New markets, surprise drops, seasonal collections
-            announced there first.
+            Find us at our regular markets every week. Special appearances, seasonal drops, and
+            behind-the-scenes moments announced on Instagram first.
           </p>
           <motion.a
             href="https://instagram.com/pickmeup.affair"
