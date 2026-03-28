@@ -47,58 +47,57 @@ export default function NavMenu() {
 
   return (
     <>
-      {/* Trigger — languette gauche */}
+      {/* Trigger — pill haut gauche */}
       <motion.button
         onClick={() => setOpen(true)}
         aria-label="Open navigation"
+        initial={{ opacity: 0 }}
         animate={{
-          x: open ? -60 : 0,
           opacity: open ? 0 : 1,
           pointerEvents: open ? 'none' : 'auto',
         }}
-        whileHover={{
-          borderColor: 'rgba(201,169,110,0.6)',
+        transition={{ duration: 0.35, ease: EASE }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(139,26,42,0.8)'
         }}
-        transition={{ duration: 0.4, ease: EASE }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(139,26,42,0.4)'
+        }}
         style={{
           position: 'fixed',
-          left: 0,
-          top: '50%',
-          transform: 'translateY(-50%)',
+          top: '1.25rem',
+          left: '1.25rem',
           zIndex: 50,
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           alignItems: 'center',
           gap: '10px',
-          padding: '20px 14px 20px 8px',
-          background: 'rgba(10,8,6,0.82)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          borderRadius: '0 20px 20px 0',
-          border: '1px solid rgba(201,169,110,0.25)',
-          borderLeft: 'none',
+          padding: '7px 14px',
+          background: 'rgba(10,8,6,0.65)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          borderRadius: '999px',
+          border: '1px solid rgba(139,26,42,0.4)',
           cursor: 'pointer',
-          transition: 'border 0.3s ease',
+          transition: 'border-color 0.3s ease',
         }}
       >
-        {/* Cherry SVG — botanical, fine line */}
+        {/* Cherry SVG — réduit 12×15px */}
         <svg
-          width="20"
-          height="26"
+          width="12"
+          height="15"
           viewBox="0 0 20 26"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
           style={{ flexShrink: 0 }}
         >
-          {/* Stem — gentle S-curve up from cherry */}
           <path
             d="M10 11 C10.5 7 13 5 13.5 1.5"
             stroke="#8B1A2A"
             strokeWidth="0.85"
             strokeLinecap="round"
           />
-          {/* Leaf — small pointed oval off the stem */}
           <path
             d="M13.5 4 C16 2.5 16.5 6.5 13 6"
             stroke="#8B1A2A"
@@ -106,7 +105,6 @@ export default function NavMenu() {
             strokeLinecap="round"
             fill="none"
           />
-          {/* Leaf midrib */}
           <path
             d="M13.5 4 C13.2 5 13 6 13 6"
             stroke="#8B1A2A"
@@ -114,9 +112,7 @@ export default function NavMenu() {
             strokeLinecap="round"
             opacity="0.7"
           />
-          {/* Cherry body */}
           <circle cx="10" cy="16.5" r="5" stroke="#8B1A2A" strokeWidth="0.85" fill="none" />
-          {/* Highlight — tiny curved line for depth */}
           <path
             d="M7.5 13.5 C8 12.5 9.5 12.2 10.5 12.8"
             stroke="#8B1A2A"
@@ -126,41 +122,25 @@ export default function NavMenu() {
           />
         </svg>
 
-        {/* "PM" initials */}
-        <span
-          style={{
-            fontFamily: 'var(--font-cormorant)',
-            fontStyle: 'italic',
-            fontWeight: 400,
-            fontSize: '28px',
-            color: '#8B1A2A',
-            lineHeight: 1,
-            letterSpacing: '-0.02em',
-            userSelect: 'none',
-          }}
-        >
-          PM
-        </span>
-
-        {/* Separator */}
+        {/* Séparateur vertical */}
         <span
           style={{
             display: 'block',
-            width: '100%',
-            height: '1px',
-            background: 'rgba(245,237,224,0.2)',
+            width: '1px',
+            height: '10px',
+            background: 'rgba(255,255,255,0.15)',
+            flexShrink: 0,
           }}
         />
 
-        {/* "Menu" vertical */}
+        {/* "Menu" */}
         <span
           style={{
             fontFamily: 'var(--font-dm)',
-            fontSize: '8px',
+            fontSize: '9px',
             fontWeight: 400,
-            letterSpacing: '0.45em',
+            letterSpacing: '0.22em',
             textTransform: 'uppercase',
-            writingMode: 'vertical-rl',
             color: 'rgba(245,237,224,0.7)',
             userSelect: 'none',
           }}
