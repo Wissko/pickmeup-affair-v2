@@ -11,6 +11,7 @@ const links = [
   { label: 'Occasions', href: '/occasions' },
   { label: 'Workshops', href: '/workshops' },
   { label: 'Gallery', href: '/gallery' },
+  { label: 'Find Us', href: '/find-us' },
   { label: 'Contact', href: '/contact' },
 ]
 
