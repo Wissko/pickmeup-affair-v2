@@ -2,8 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState, useCallback } from 'react'
-import { usePathname } from 'next/navigation'
-import { useNav } from '@/app/providers'
+import { usePathname, useRouter } from 'next/navigation'
 
 const links = [
   { label: 'Home', href: '/' },
@@ -20,7 +19,7 @@ const EASE = [0.22, 1, 0.36, 1] as const
 export default function NavMenu() {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
-  const { navigate } = useNav()
+  const router = useRouter()
 
   const close = useCallback(() => setOpen(false), [])
 
@@ -42,7 +41,7 @@ export default function NavMenu() {
 
   const handleNav = (href: string) => {
     close()
-    setTimeout(() => navigate(href), 80)
+    router.push(href)
   }
 
   return (
@@ -221,7 +220,6 @@ export default function NavMenu() {
                     <NavLink
                       label={link.label}
                       href={link.href}
-                      index={i}
                       active={pathname === link.href}
                       onClick={handleNav}
                     />
@@ -279,13 +277,11 @@ export default function NavMenu() {
 function NavLink({
   label,
   href,
-  index,
   active,
   onClick,
 }: {
   label: string
   href: string
-  index: number
   active: boolean
   onClick: (href: string) => void
 }) {
@@ -302,11 +298,9 @@ function NavLink({
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
         width: '100%',
         padding: 'clamp(0.75rem, 1.8vw, 1.2rem) 0',
         textAlign: 'left',
-        gap: '2rem',
       }}
     >
       <span
@@ -322,18 +316,6 @@ function NavLink({
         }}
       >
         {label}
-      </span>
-      <span
-        style={{
-          fontFamily: 'var(--font-dm)',
-          fontSize: '0.65rem',
-          fontWeight: 300,
-          letterSpacing: '0.35em',
-          color: 'rgba(245,237,224,0.22)',
-          flexShrink: 0,
-        }}
-      >
-        0{index + 1}
       </span>
     </button>
   )
