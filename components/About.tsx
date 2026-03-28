@@ -21,7 +21,7 @@ function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   )
 }
 
-export default function About() {
+export default function About({ standalone = false }: { standalone?: boolean }) {
   const imgRef = useRef<HTMLDivElement>(null)
   const inView = useInView(imgRef, { once: true, margin: '-100px' })
 
@@ -30,7 +30,9 @@ export default function About() {
       id="about"
       style={{
         background: '#0a0806',
-        padding: 'clamp(5rem, 12vw, 10rem) clamp(1.25rem, 5vw, 5rem)',
+        padding: standalone
+          ? 'calc(clamp(5rem, 12vw, 10rem) + 80px) clamp(1.25rem, 5vw, 5rem) clamp(5rem, 12vw, 10rem)'
+          : 'clamp(5rem, 12vw, 10rem) clamp(1.25rem, 5vw, 5rem)',
         overflow: 'hidden',
       }}
     >

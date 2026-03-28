@@ -6,7 +6,7 @@ import { useRef } from 'react'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
-export default function Gallery() {
+export default function Gallery({ standalone = false }: { standalone?: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
@@ -14,7 +14,9 @@ export default function Gallery() {
     <section
       style={{
         background: '#0f0c0a',
-        padding: 'clamp(5rem, 10vw, 9rem) clamp(1.25rem, 4vw, 4rem)',
+        padding: standalone
+          ? 'calc(clamp(5rem, 10vw, 9rem) + 80px) clamp(1.25rem, 4vw, 4rem) clamp(5rem, 10vw, 9rem)'
+          : 'clamp(5rem, 10vw, 9rem) clamp(1.25rem, 4vw, 4rem)',
         overflow: 'hidden',
       }}
     >

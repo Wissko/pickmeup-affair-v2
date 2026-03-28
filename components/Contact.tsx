@@ -8,7 +8,7 @@ const ease = [0.22, 1, 0.36, 1] as const
 
 const enquiryTypes = ['Wedding', 'Corporate', 'Birthday / Gift', 'Workshop', 'Market info', 'Other']
 
-export default function Contact() {
+export default function Contact({ standalone = false }: { standalone?: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const [selected, setSelected] = useState('')
@@ -20,7 +20,9 @@ export default function Contact() {
       style={{
         position: 'relative',
         background: '#0a0806',
-        padding: 'clamp(5rem, 10vw, 9rem) clamp(1.25rem, 5vw, 5rem)',
+        padding: standalone
+          ? 'calc(clamp(5rem, 10vw, 9rem) + 80px) clamp(1.25rem, 5vw, 5rem) clamp(5rem, 10vw, 9rem)'
+          : 'clamp(5rem, 10vw, 9rem) clamp(1.25rem, 5vw, 5rem)',
         overflow: 'hidden',
       }}
     >

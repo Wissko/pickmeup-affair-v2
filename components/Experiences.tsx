@@ -46,7 +46,7 @@ function ExperienceCard({ item, index }: { item: typeof experiences[0]; index: n
       style={{
         position: 'relative',
         display: 'grid',
-        gridTemplateColumns: index % 2 === 0 ? '1fr 1fr' : '1fr 1fr',
+        gridTemplateColumns: '1fr 1fr',
         gap: 0,
         minHeight: '70vh',
         overflow: 'hidden',
@@ -162,12 +162,20 @@ function ExperienceCard({ item, index }: { item: typeof experiences[0]; index: n
   )
 }
 
-export default function Experiences() {
+export default function Experiences({ standalone = false }: { standalone?: boolean }) {
   const titleRef = useRef<HTMLDivElement>(null)
   const titleInView = useInView(titleRef, { once: true, margin: '-80px' })
 
   return (
-    <section id="experiences" style={{ background: '#0a0806', paddingTop: 'clamp(5rem, 10vw, 8rem)' }}>
+    <section
+      id="experiences"
+      style={{
+        background: '#0a0806',
+        paddingTop: standalone
+          ? 'calc(clamp(5rem, 10vw, 8rem) + 80px)'
+          : 'clamp(5rem, 10vw, 8rem)',
+      }}
+    >
       {/* Header */}
       <motion.div
         ref={titleRef}

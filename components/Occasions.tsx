@@ -3,6 +3,7 @@
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import { useRef } from 'react'
+import { useNav } from '@/app/providers'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -30,7 +31,7 @@ const occasions = [
   },
 ]
 
-export default function Occasions() {
+export default function Occasions({ standalone = false }: { standalone?: boolean }) {
   const headerRef = useRef<HTMLDivElement>(null)
   const headerInView = useInView(headerRef, { once: true, margin: '-80px' })
 
@@ -39,7 +40,9 @@ export default function Occasions() {
       id="occasions"
       style={{
         background: '#0a0806',
-        padding: 'clamp(5rem, 10vw, 9rem) 0',
+        padding: standalone
+          ? 'calc(clamp(5rem, 10vw, 9rem) + 80px) 0 clamp(5rem, 10vw, 9rem)'
+          : 'clamp(5rem, 10vw, 9rem) 0',
         overflow: 'hidden',
       }}
     >
@@ -81,14 +84,8 @@ export default function Occasions() {
         </h2>
       </motion.div>
 
-      {/* Occasions — horizontal scrollable on mobile, stacked on desktop */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1px',
-        }}
-      >
+      {/* Occasions — stacked rows */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
         {occasions.map((occ, i) => (
           <OccasionRow key={occ.tag} item={occ} index={i} />
         ))}
@@ -100,6 +97,7 @@ export default function Occasions() {
 function OccasionRow({ item, index }: { item: typeof occasions[0]; index: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
+  const { navigate } = useNav()
 
   return (
     <motion.div
@@ -109,7 +107,7 @@ function OccasionRow({ item, index }: { item: typeof occasions[0]; index: number
       transition={{ duration: 0.8, ease, delay: index * 0.1 }}
       style={{
         display: 'grid',
-        gridTemplateColumns: index % 2 === 0 ? '1fr 1fr' : '1fr 1fr',
+        gridTemplateColumns: '1fr 1fr',
         minHeight: '65vh',
         overflow: 'hidden',
       }}
@@ -204,9 +202,13 @@ function OccasionRow({ item, index }: { item: typeof occasions[0]; index: number
           {item.desc}
         </p>
 
-        <a
-          href="#contact"
+        <button
+          onClick={() => navigate('/contact')}
           style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.65rem',
@@ -216,7 +218,6 @@ function OccasionRow({ item, index }: { item: typeof occasions[0]; index: number
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
             color: '#c9a96e',
-            textDecoration: 'none',
             paddingBottom: '0.3rem',
             borderBottom: '1px solid rgba(201,169,110,0.35)',
             width: 'fit-content',
@@ -227,7 +228,7 @@ function OccasionRow({ item, index }: { item: typeof occasions[0]; index: number
         >
           {item.cta}
           <span>&#8594;</span>
-        </a>
+        </button>
       </div>
     </motion.div>
   )

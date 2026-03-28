@@ -3,20 +3,23 @@
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import { useRef } from 'react'
+import { useNav } from '@/app/providers'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
 const navLinks = [
-  { label: 'Story', href: '#about' },
-  { label: 'Experiences', href: '#experiences' },
-  { label: 'Occasions', href: '#occasions' },
-  { label: 'Workshops', href: '#workshops' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Our Story', href: '/about' },
+  { label: 'Experiences', href: '/experiences' },
+  { label: 'Occasions', href: '/occasions' },
+  { label: 'Workshops', href: '/workshops' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export default function Footer() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
+  const { navigate } = useNav()
 
   return (
     <footer
@@ -40,14 +43,20 @@ export default function Footer() {
       >
         {/* Brand */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          <Image
-            src="/images/logopickmeup.PNG"
-            alt="Pick Me Up Affair"
-            width={130}
-            height={40}
-            unoptimized
-            style={{ objectFit: 'contain', width: 'auto', height: '32px', objectPosition: 'left' }}
-          />
+          <button
+            onClick={() => navigate('/')}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, width: 'fit-content' }}
+            aria-label="Go to homepage"
+          >
+            <Image
+              src="/images/logopickmeup.PNG"
+              alt="Pick Me Up Affair"
+              width={130}
+              height={40}
+              unoptimized
+              style={{ objectFit: 'contain', width: 'auto', height: '32px', objectPosition: 'left' }}
+            />
+          </button>
           <p
             style={{
               fontFamily: 'var(--font-dm)',
@@ -79,9 +88,13 @@ export default function Footer() {
           <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a
-                  href={link.href}
+                <button
+                  onClick={() => navigate(link.href)}
                   style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
                     fontFamily: 'var(--font-dm)',
                     fontWeight: 300,
                     fontSize: '0.85rem',
@@ -93,7 +106,7 @@ export default function Footer() {
                   onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(245,237,224,0.5)')}
                 >
                   {link.label}
-                </a>
+                </button>
               </li>
             ))}
           </ul>

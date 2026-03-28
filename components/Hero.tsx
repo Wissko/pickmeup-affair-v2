@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import { useRef } from 'react'
+import { useNav } from '@/app/providers'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -12,11 +13,11 @@ export default function Hero() {
   const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '35%'])
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
+  const { navigate } = useNav()
 
   return (
     <section
       ref={ref}
-      id="hero"
       style={{
         position: 'relative',
         minHeight: '100svh',
@@ -26,9 +27,7 @@ export default function Hero() {
       }}
     >
       {/* Parallax image */}
-      <motion.div
-        style={{ position: 'absolute', inset: '-10%', y: imageY }}
-      >
+      <motion.div style={{ position: 'absolute', inset: '-10%', y: imageY }}>
         <Image
           src="/images/hero.jpg"
           alt="Pick Me Up Affair — handcrafted tiramisu verrine"
@@ -45,7 +44,8 @@ export default function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(135deg, rgba(10,8,6,0.55) 0%, rgba(10,8,6,0) 50%, rgba(10,8,6,0.7) 100%), linear-gradient(to top, rgba(10,8,6,1) 0%, rgba(10,8,6,0) 40%)',
+          background:
+            'linear-gradient(135deg, rgba(10,8,6,0.55) 0%, rgba(10,8,6,0) 50%, rgba(10,8,6,0.7) 100%), linear-gradient(to top, rgba(10,8,6,1) 0%, rgba(10,8,6,0) 40%)',
         }}
       />
 
@@ -145,9 +145,13 @@ export default function Hero() {
             Handcrafted for those who believe dessert should be an experience, not an afterthought.
           </p>
 
-          <a
-            href="#about"
+          <button
+            onClick={() => navigate('/about')}
             style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.75rem',
@@ -173,7 +177,7 @@ export default function Hero() {
           >
             Discover the story
             <span style={{ fontSize: '1.2em' }}>&#8594;</span>
-          </a>
+          </button>
         </motion.div>
       </motion.div>
 

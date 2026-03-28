@@ -3,6 +3,7 @@
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import { useRef } from 'react'
+import { useNav } from '@/app/providers'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -30,14 +31,18 @@ const inclusions = [
   'Small groups of up to 10 people',
 ]
 
-export default function Workshops() {
+export default function Workshops({ standalone = false }: { standalone?: boolean }) {
+  const { navigate } = useNav()
+
   return (
     <section
       id="workshops"
       style={{
         background: '#f5ede0',
         color: '#0a0806',
-        padding: 'clamp(5rem, 10vw, 9rem) clamp(1.25rem, 5vw, 5rem)',
+        padding: standalone
+          ? 'calc(clamp(5rem, 10vw, 9rem) + 80px) clamp(1.25rem, 5vw, 5rem) clamp(5rem, 10vw, 9rem)'
+          : 'clamp(5rem, 10vw, 9rem) clamp(1.25rem, 5vw, 5rem)',
         overflow: 'hidden',
       }}
     >
@@ -158,8 +163,8 @@ export default function Workshops() {
           </FadeUp>
 
           <FadeUp delay={0.5}>
-            <a
-              href="#contact"
+            <button
+              onClick={() => navigate('/contact')}
               style={{
                 display: 'inline-block',
                 marginTop: '0.5rem',
@@ -170,15 +175,17 @@ export default function Workshops() {
                 textTransform: 'uppercase',
                 color: '#f5ede0',
                 background: '#0a0806',
+                border: 'none',
                 padding: '1rem 2.25rem',
                 textDecoration: 'none',
+                cursor: 'pointer',
                 transition: 'background 0.3s ease',
               }}
               onMouseEnter={(e) => (e.currentTarget.style.background = '#1a1410')}
               onMouseLeave={(e) => (e.currentTarget.style.background = '#0a0806')}
             >
               Book a workshop
-            </a>
+            </button>
           </FadeUp>
         </div>
 
