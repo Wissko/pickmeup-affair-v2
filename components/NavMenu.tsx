@@ -81,6 +81,51 @@ export default function NavMenu() {
           transition: 'border 0.3s ease',
         }}
       >
+        {/* Cherry SVG — botanical, fine line */}
+        <svg
+          width="20"
+          height="26"
+          viewBox="0 0 20 26"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          style={{ flexShrink: 0 }}
+        >
+          {/* Stem — gentle S-curve up from cherry */}
+          <path
+            d="M10 11 C10.5 7 13 5 13.5 1.5"
+            stroke="#8B1A2A"
+            strokeWidth="0.85"
+            strokeLinecap="round"
+          />
+          {/* Leaf — small pointed oval off the stem */}
+          <path
+            d="M13.5 4 C16 2.5 16.5 6.5 13 6"
+            stroke="#8B1A2A"
+            strokeWidth="0.85"
+            strokeLinecap="round"
+            fill="none"
+          />
+          {/* Leaf midrib */}
+          <path
+            d="M13.5 4 C13.2 5 13 6 13 6"
+            stroke="#8B1A2A"
+            strokeWidth="0.5"
+            strokeLinecap="round"
+            opacity="0.7"
+          />
+          {/* Cherry body */}
+          <circle cx="10" cy="16.5" r="5" stroke="#8B1A2A" strokeWidth="0.85" fill="none" />
+          {/* Highlight — tiny curved line for depth */}
+          <path
+            d="M7.5 13.5 C8 12.5 9.5 12.2 10.5 12.8"
+            stroke="#8B1A2A"
+            strokeWidth="0.55"
+            strokeLinecap="round"
+            opacity="0.5"
+          />
+        </svg>
+
         {/* "PM" initials */}
         <span
           style={{
