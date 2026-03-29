@@ -18,6 +18,8 @@ const slides = [
 
 const AUTOPLAY_MS = 4000
 
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
+
 const variants = {
   enter: (dir: number) => ({
     opacity: 0,
@@ -26,12 +28,12 @@ const variants = {
   center: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.9, ease: EASE },
   },
   exit: (dir: number) => ({
     opacity: 0,
     x: dir > 0 ? -60 : 60,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.7, ease: EASE },
   }),
 }
 
