@@ -1,36 +1,100 @@
 'use client'
 
-import { motion, useInView } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
-import { useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
-const ease = [0.22, 1, 0.36, 1] as const
+const slides = [
+  { src: '/images/hero.jpg',   alt: 'Handcrafted tiramisu',       caption: 'Handcrafted Tiramisu' },
+  { src: '/images/coeur.jpg',  alt: 'Three tiramisus with heart', caption: 'Made with intention' },
+  { src: '/images/custom.jpg', alt: 'Custom pot with candles',    caption: 'Personalized creations' },
+  { src: '/images/gift.jpg',   alt: 'Luxury gifting box',         caption: 'Luxury gifting' },
+  { src: '/images/craft.jpg',  alt: 'Artisan at work',            caption: 'The craft' },
+  { src: '/images/events.jpg', alt: 'Just Married tiramisu',      caption: 'Events' },
+  { src: '/images/raise.jpg',  alt: 'Corporate tiramisu',         caption: 'Corporate' },
+  { src: '/images/spoon.jpg',  alt: 'Spoon detail',               caption: 'Every detail counts' },
+  { src: '/images/can.jpg',    alt: 'Artisan can',                caption: 'Artisan made' },
+]
+
+const AUTOPLAY_MS = 4000
+
+const variants = {
+  enter: (dir: number) => ({
+    opacity: 0,
+    x: dir > 0 ? 60 : -60,
+  }),
+  center: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+  },
+  exit: (dir: number) => ({
+    opacity: 0,
+    x: dir > 0 ? -60 : 60,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  }),
+}
 
 export default function Gallery({ standalone = false }: { standalone?: boolean }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
+  const [[index, dir], setSlide] = useState([0, 1])
+  const hovering = useRef(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const go = useCallback(
+    (nextDir: number) => {
+      setSlide(([prev]) => {
+        const next = (prev + nextDir + slides.length) % slides.length
+        return [next, nextDir]
+      })
+    },
+    [],
+  )
+
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current)
+    timerRef.current = setTimeout(() => {
+      if (!hovering.current) go(1)
+    }, AUTOPLAY_MS)
+  }, [go])
+
+  useEffect(() => {
+    resetTimer()
+    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
+  }, [index, resetTimer])
+
+  const handlePrev = () => { go(-1); resetTimer() }
+  const handleNext = () => { go(1); resetTimer() }
+  const handleDot  = (i: number) => {
+    const d = i > index ? 1 : -1
+    setSlide([i, d])
+    resetTimer()
+  }
+
+  const topPad = standalone
+    ? 'calc(clamp(5rem, 10vw, 9rem) + 80px)'
+    : 'clamp(5rem, 10vw, 9rem)'
 
   return (
     <section
       style={{
-        background: '#0f0c0a',
-        padding: standalone
-          ? 'calc(clamp(5rem, 10vw, 9rem) + 80px) clamp(1.25rem, 4vw, 4rem) clamp(5rem, 10vw, 9rem)'
-          : 'clamp(5rem, 10vw, 9rem) clamp(1.25rem, 4vw, 4rem)',
-        overflow: 'hidden',
+        background: '#0d0b09',
+        paddingTop: topPad,
+        paddingBottom: 'clamp(5rem, 10vw, 9rem)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 'clamp(2rem, 4vw, 3.5rem)',
       }}
     >
-      {/* Header */}
-      <motion.div
-        ref={ref}
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7, ease }}
+      {/* Section header */}
+      <div
         style={{
+          width: '100%',
+          maxWidth: '100%',
+          padding: '0 clamp(1.25rem, 4vw, 4rem)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-end',
-          marginBottom: 'clamp(2.5rem, 5vw, 4rem)',
           flexWrap: 'wrap',
           gap: '1rem',
         }}
@@ -73,146 +137,156 @@ export default function Gallery({ standalone = false }: { standalone?: boolean }
         >
           From intimate gifts to grand event centrepieces. No two creations are alike.
         </p>
-      </motion.div>
+      </div>
 
-      {/* Masonry-style grid */}
+      {/* Carousel */}
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          gridTemplateRows: 'auto',
-          gap: '12px',
+          position: 'relative',
+          width: 'clamp(280px, 85vw, 100%)',
+          aspectRatio: '16/9',
+          overflow: 'hidden',
+          background: '#0d0b09',
+        }}
+        onMouseEnter={() => { hovering.current = true }}
+        onMouseLeave={() => { hovering.current = false }}
+      >
+        <AnimatePresence initial={false} custom={dir} mode="popLayout">
+          <motion.div
+            key={index}
+            custom={dir}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            style={{
+              position: 'absolute',
+              inset: 0,
+            }}
+          >
+            <Image
+              src={slides[index].src}
+              alt={slides[index].alt}
+              fill
+              unoptimized
+              priority
+              style={{ objectFit: 'cover', objectPosition: 'center' }}
+            />
+
+            {/* Caption overlay — glassmorphism bottom-left */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 'clamp(1rem, 3vw, 2rem)',
+                left: 'clamp(1rem, 3vw, 2rem)',
+                padding: '0.55rem 1rem',
+                background: 'rgba(10,8,6,0.5)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                borderLeft: '1px solid rgba(201,169,110,0.3)',
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: 'var(--font-dm)',
+                  fontSize: '0.58rem',
+                  letterSpacing: '0.26em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(201,169,110,0.9)',
+                  margin: 0,
+                }}
+              >
+                {slides[index].caption}
+              </p>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Arrow — prev */}
+        <button
+          onClick={handlePrev}
+          aria-label="Previous"
+          style={{
+            position: 'absolute',
+            left: 'clamp(0.75rem, 2vw, 1.5rem)',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'rgba(10,8,6,0.4)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            border: '1px solid rgba(201,169,110,0.2)',
+            color: 'rgba(201,169,110,0.7)',
+            width: '2.2rem',
+            height: '2.2rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            zIndex: 10,
+            transition: 'opacity 0.3s',
+          }}
+        >
+          <svg width="10" height="16" viewBox="0 0 10 16" fill="none">
+            <path d="M8 2L2 8L8 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+
+        {/* Arrow — next */}
+        <button
+          onClick={handleNext}
+          aria-label="Next"
+          style={{
+            position: 'absolute',
+            right: 'clamp(0.75rem, 2vw, 1.5rem)',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'rgba(10,8,6,0.4)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            border: '1px solid rgba(201,169,110,0.2)',
+            color: 'rgba(201,169,110,0.7)',
+            width: '2.2rem',
+            height: '2.2rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            zIndex: 10,
+            transition: 'opacity 0.3s',
+          }}
+        >
+          <svg width="10" height="16" viewBox="0 0 10 16" fill="none">
+            <path d="M2 2L8 8L2 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      {/* Dots */}
+      <div
+        style={{
+          display: 'flex',
+          gap: '0.5rem',
+          alignItems: 'center',
         }}
       >
-        {/* Large hero image — left, tall */}
-        <GalleryItem
-          src="/images/coeur.jpg"
-          alt="Three tiramisus with icing sugar heart"
-          caption="Made with intention"
-          style={{ gridColumn: '1 / 7', gridRow: '1 / 3', aspectRatio: '4/5' }}
-          delay={0}
-        />
-
-        {/* Top right stack */}
-        <GalleryItem
-          src="/images/custom.jpg"
-          alt="Custom pot with candles"
-          caption="Personalized"
-          style={{ gridColumn: '7 / 10', gridRow: '1 / 2', aspectRatio: '1/1' }}
-          delay={0.1}
-        />
-        <GalleryItem
-          src="/images/gift.jpg"
-          alt="Be Mine gifting box"
-          caption="Luxury gifting"
-          style={{ gridColumn: '10 / 13', gridRow: '1 / 2', aspectRatio: '1/1' }}
-          delay={0.15}
-        />
-
-        {/* Bottom right — wide */}
-        <GalleryItem
-          src="/images/raise.jpg"
-          alt="Corporate tiramisu"
-          caption="Corporate"
-          style={{ gridColumn: '7 / 13', gridRow: '2 / 3', aspectRatio: '16/9' }}
-          delay={0.2}
-        />
-
-        {/* Full width banner */}
-        <GalleryItem
-          src="/images/events.jpg"
-          alt="Just Married tiramisu"
-          caption="Events"
-          style={{ gridColumn: '1 / 13', gridRow: '3', aspectRatio: '21/9' }}
-          delay={0.25}
-          objectPosition="center 35%"
-        />
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => handleDot(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            style={{
+              width: i === index ? '1.6rem' : '0.4rem',
+              height: '0.4rem',
+              borderRadius: '999px',
+              background: i === index ? '#c9a96e' : 'rgba(201,169,110,0.3)',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              transition: 'all 0.4s cubic-bezier(0.22,1,0.36,1)',
+            }}
+          />
+        ))}
       </div>
     </section>
-  )
-}
-
-function GalleryItem({
-  src,
-  alt,
-  caption,
-  style,
-  delay,
-  objectPosition = 'center',
-}: {
-  src: string
-  alt: string
-  caption: string
-  style: React.CSSProperties
-  delay?: number
-  objectPosition?: string
-}) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, scale: 0.96 }}
-      animate={inView ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay }}
-      style={{
-        ...style,
-        position: 'relative',
-        overflow: 'hidden',
-        cursor: 'pointer',
-      }}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        unoptimized
-        style={{
-          objectFit: 'cover',
-          objectPosition,
-          transition: 'transform 0.7s ease',
-        }}
-      />
-      {/* Hover overlay */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'rgba(10,8,6,0)',
-          transition: 'background 0.4s ease',
-          display: 'flex',
-          alignItems: 'flex-end',
-          padding: '1rem',
-        }}
-        onMouseEnter={(e) => {
-          const div = e.currentTarget
-          div.style.background = 'rgba(10,8,6,0.45)'
-          const img = div.previousElementSibling as HTMLImageElement
-          if (img) img.style.transform = 'scale(1.04)'
-        }}
-        onMouseLeave={(e) => {
-          const div = e.currentTarget
-          div.style.background = 'rgba(10,8,6,0)'
-          const img = div.previousElementSibling as HTMLImageElement
-          if (img) img.style.transform = 'scale(1)'
-        }}
-      >
-        <p
-          style={{
-            fontFamily: 'var(--font-dm)',
-            fontSize: '0.58rem',
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: 'rgba(245,237,224,0)',
-            transition: 'color 0.4s ease',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(201,169,110,0.9)')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(245,237,224,0)')}
-        >
-          {caption}
-        </p>
-      </div>
-    </motion.div>
   )
 }
