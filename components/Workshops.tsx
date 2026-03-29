@@ -209,7 +209,7 @@ export default function Workshops({ standalone = false }: { standalone?: boolean
               />
             </div>
 
-            {/* Floating second image */}
+            {/* Floating image — bottom right */}
             <div
               style={{
                 position: 'absolute',
@@ -225,6 +225,29 @@ export default function Workshops({ standalone = false }: { standalone?: boolean
               <Image
                 src="/images/spoon.jpg"
                 alt="Tiramisu slice on a spoon"
+                fill
+                unoptimized
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
+
+            {/* Floating image — top left */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '-2rem',
+                left: '-1.5rem',
+                width: '42%',
+                aspectRatio: '1/1',
+                overflow: 'hidden',
+                border: '4px solid #1a1410',
+                boxShadow: '0 12px 40px rgba(10,8,6,0.35)',
+                zIndex: 2,
+              }}
+            >
+              <Image
+                src="/images/custom.jpg"
+                alt="Custom tiramisu creation"
                 fill
                 unoptimized
                 style={{ objectFit: 'cover' }}
