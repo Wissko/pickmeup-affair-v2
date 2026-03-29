@@ -38,8 +38,8 @@ export default function Workshops({ standalone = false }: { standalone?: boolean
     <section
       id="workshops"
       style={{
-        background: '#f5ede0',
-        color: '#0a0806',
+        background: '#0d0b09',
+        color: '#f5ede0',
         padding: standalone
           ? 'calc(clamp(5rem, 10vw, 9rem) + 80px) clamp(1.25rem, 5vw, 5rem) clamp(5rem, 10vw, 9rem)'
           : 'clamp(5rem, 10vw, 9rem) clamp(1.25rem, 5vw, 5rem)',
@@ -79,7 +79,7 @@ export default function Workshops({ standalone = false }: { standalone?: boolean
                 fontSize: 'clamp(2.5rem, 5vw, 4rem)',
                 lineHeight: 1.05,
                 letterSpacing: '-0.02em',
-                color: '#0a0806',
+                color: '#f5ede0',
               }}
             >
               Learn the craft. Keep the memories.
@@ -93,7 +93,7 @@ export default function Workshops({ standalone = false }: { standalone?: boolean
                 fontWeight: 300,
                 fontSize: 'clamp(0.88rem, 1.3vw, 1rem)',
                 lineHeight: 1.85,
-                color: 'rgba(10,8,6,0.65)',
+                color: 'rgba(245,237,224,0.65)',
                 maxWidth: '400px',
               }}
             >
@@ -108,7 +108,7 @@ export default function Workshops({ standalone = false }: { standalone?: boolean
                 fontWeight: 300,
                 fontSize: 'clamp(0.88rem, 1.3vw, 1rem)',
                 lineHeight: 1.85,
-                color: 'rgba(10,8,6,0.65)',
+                color: 'rgba(245,237,224,0.65)',
                 maxWidth: '400px',
               }}
             >
@@ -125,7 +125,7 @@ export default function Workshops({ standalone = false }: { standalone?: boolean
                   fontSize: '0.6rem',
                   letterSpacing: '0.22em',
                   textTransform: 'uppercase',
-                  color: '#7a6a58',
+                  color: 'rgba(245,237,224,0.35)',
                   marginBottom: '1rem',
                 }}
               >
@@ -142,7 +142,7 @@ export default function Workshops({ standalone = false }: { standalone?: boolean
                       fontFamily: 'var(--font-dm)',
                       fontWeight: 300,
                       fontSize: '0.88rem',
-                      color: 'rgba(10,8,6,0.7)',
+                      color: 'rgba(245,237,224,0.7)',
                       lineHeight: 1.6,
                     }}
                   >
@@ -218,7 +218,7 @@ export default function Workshops({ standalone = false }: { standalone?: boolean
                 width: '55%',
                 aspectRatio: '1/1',
                 overflow: 'hidden',
-                border: '4px solid #f5ede0',
+                border: '4px solid #1a1410',
                 boxShadow: '0 20px 60px rgba(10,8,6,0.15)',
               }}
             >
